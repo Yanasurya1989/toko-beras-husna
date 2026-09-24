@@ -347,18 +347,14 @@
 
                                             {{-- HAPUS --}}
                                             <form action="{{ route('transaksi.destroy', $transaction->id) }}"
-                                                method="POST"
-                                                onsubmit="return confirm('Yakin ingin menghapus transaksi ini? Data transaksi, item, dan riwayat pembayaran akan ikut terhapus.');">
+                                                method="POST" onsubmit="return hapusTransaksi(this);">
 
                                                 @csrf
                                                 @method('DELETE')
 
                                                 <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
-
                                                     <i class="bi bi-trash"></i>
-
                                                 </button>
-
                                             </form>
 
                                         </div>
@@ -395,5 +391,37 @@
         </div>
 
     </div>
+
+    <script>
+        function hapusTransaksi(form) {
+
+            const password = prompt('Masukkan password untuk menghapus transaksi:');
+
+            if (password === null) {
+                return false;
+            }
+
+            if (password.trim() === '') {
+                alert('Password harus diisi.');
+                return false;
+            }
+
+            if (!confirm(
+                    'Yakin ingin menghapus transaksi ini? Data transaksi, item, dan riwayat pembayaran akan ikut terhapus.'
+                    )) {
+                return false;
+            }
+
+            const input = document.createElement('input');
+
+            input.type = 'hidden';
+            input.name = 'delete_password';
+            input.value = password;
+
+            form.appendChild(input);
+
+            return true;
+        }
+    </script>
 
 @endsection

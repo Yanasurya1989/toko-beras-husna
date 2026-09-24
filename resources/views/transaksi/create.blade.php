@@ -4,7 +4,7 @@
 
     <style>
         /* =========================================
-           TRANSACTION FORM
+                       TRANSACTION FORM
         ========================================= */
 
         .transaksi-wrapper {
@@ -44,7 +44,7 @@
         }
 
         /* =========================================
-           ITEM BERAS
+                       ITEM BERAS
         ========================================= */
 
         .item-card {
@@ -110,7 +110,7 @@
         }
 
         /* =========================================
-           TOTAL
+                       TOTAL
         ========================================= */
 
         .total-box {
@@ -124,7 +124,7 @@
         }
 
         /* =========================================
-           RINGKASAN
+                       RINGKASAN
         ========================================= */
 
         .ringkasan-box {
@@ -151,7 +151,7 @@
         }
 
         /* =========================================
-           BUTTON
+                       BUTTON
         ========================================= */
 
         .btn-transaksi {
@@ -161,7 +161,7 @@
         }
 
         /* =========================================
-           MOBILE
+                       MOBILE
         ========================================= */
 
         @media (max-width: 576px) {
@@ -232,7 +232,7 @@
             <div class="card shadow-sm transaksi-card">
 
                 {{-- =========================================
-                 HEADER
+                         HEADER
             ========================================== --}}
                 <div class="card-header bg-primary text-white transaksi-header">
 
@@ -260,13 +260,17 @@
                     {{-- ERROR --}}
                     @if ($errors->any())
                         <div class="alert alert-danger">
+
                             <strong>Data belum lengkap.</strong>
 
                             <ul class="mb-0 mt-2">
+
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
+
                             </ul>
+
                         </div>
                     @endif
 
@@ -279,6 +283,7 @@
                         {{-- =========================================
                          TANGGAL TRANSAKSI
                     ========================================== --}}
+
                         <div class="mb-3">
 
                             <label class="form-label">
@@ -291,7 +296,6 @@
                                 Waktu transaksi mengikuti waktu sistem.
                             </small>
 
-                            {{-- Tidak dikirim dari browser --}}
                             <input type="hidden" name="transaction_date" id="transaction_date">
 
                         </div>
@@ -300,6 +304,7 @@
                         {{-- =========================================
                          NAMA PEMBELI
                     ========================================== --}}
+
                         <div class="mb-4">
 
                             <label class="form-label">
@@ -319,6 +324,7 @@
                         <div class="d-flex justify-content-between align-items-center mb-3">
 
                             <div>
+
                                 <h6 class="fw-bold mb-1">
                                     🛍️ Daftar Beras
                                 </h6>
@@ -326,12 +332,14 @@
                                 <small class="text-muted">
                                     Tambahkan satu atau beberapa jenis beras.
                                 </small>
+
                             </div>
 
                         </div>
 
 
                         {{-- CONTAINER ITEM --}}
+
                         <div id="items-container"></div>
 
 
@@ -397,9 +405,9 @@
                         </div>
 
 
-                        {{-- =================================================
+                        {{-- =========================================
                          PEMBAYARAN NORMAL
-                    ================================================== --}}
+                    ========================================== --}}
 
                         <div id="form_bayar">
 
@@ -413,6 +421,7 @@
 
 
                                     {{-- UANG DIBAYARKAN --}}
+
                                     <div class="mb-3">
 
                                         <label class="form-label">
@@ -435,6 +444,7 @@
 
 
                                     {{-- KEMBALIAN --}}
+
                                     <div class="alert alert-success mb-0" id="box_kembalian">
 
                                         <div class="ringkasan-row">
@@ -458,9 +468,9 @@
                         </div>
 
 
-                        {{-- =================================================
+                        {{-- =========================================
                          PEMBAYARAN TITIP / HUTANG
-                    ================================================== --}}
+                    ========================================== --}}
 
                         <div id="form_titip" style="display: none;">
 
@@ -474,6 +484,7 @@
 
 
                                     {{-- UANG TITIP --}}
+
                                     <div class="mb-3">
 
                                         <label class="form-label">
@@ -496,6 +507,7 @@
 
 
                                     {{-- RINGKASAN TITIP --}}
+
                                     <div class="alert alert-warning ringkasan-box mb-0">
 
                                         <div class="ringkasan-row">
@@ -581,12 +593,91 @@
 
 
     {{-- =========================================================
-     JAVASCRIPT
+                         JAVASCRIPT
 ========================================================= --}}
 
     <script>
         /* ========================================================
-           TANGGAL & WAKTU
+                        DATA BERAS & HARGA
+           ========================================================
+
+           eceran = harga per Kg
+
+           karung = harga per Karung
+
+           Jika eceran tidak tersedia:
+           hanya bisa memilih Karung.
+
+           Jika karung tidak tersedia:
+           hanya bisa memilih Kg.
+        ======================================================== */
+
+        const hargaBeras = {
+
+            "Angsa": {
+                kg: 14500,
+                karung: 352500
+            },
+
+            "Ajs": {
+                kg: 15000,
+                karung: 357500
+            },
+
+            "Jembar super": {
+                kg: 15000,
+                karung: 360000
+            },
+
+            "Jembar SG": {
+                karung: 362500
+            },
+
+            "Ap": {
+                kg: 15500,
+                karung: 367500
+            },
+
+            "Sr Ciparay": {
+                kg: 16000,
+                karung: 375000
+            },
+
+            "Setrawangi": {
+                kg: 16500,
+                karung: 385000
+            },
+
+            "Pandan wangi": {
+                kg: 17000,
+                karung: 400000
+            },
+
+            "Beras pn": {
+                kg: 17500,
+                karung: 425000
+            },
+
+            "Ketan putih": {
+                kg: 23000,
+                karung: 550000
+            },
+
+            "Ketan hitam": {
+                kg: 22000,
+                karung: 512500
+            },
+
+            "Beras merah": {
+                kg: 16500,
+                karung: 400000
+            }
+
+        };
+
+
+        /* ========================================================
+                             TANGGAL & WAKTU
         ======================================================== */
 
         function updateTanggal() {
@@ -601,12 +692,11 @@
             const menit = String(sekarang.getMinutes()).padStart(2, '0');
             const detik = String(sekarang.getSeconds()).padStart(2, '0');
 
+
             document.getElementById('tanggal_transaksi').value =
                 `${hari}/${bulan}/${tahun} ${jam}:${menit}:${detik}`;
 
-            /*
-             * Format untuk database.
-             */
+
             document.getElementById('transaction_date').value =
                 `${tahun}-${bulan}-${hari} ${jam}:${menit}:${detik}`;
         }
@@ -619,49 +709,7 @@
 
 
         /* ========================================================
-           DATA HARGA STATIS
-        ======================================================== */
-
-        const hargaBeras = {
-
-            "Beras Ramos": {
-
-                liter: 15000,
-                kg: 18000,
-                karung: 450000
-
-            },
-
-            "Beras Pandan Wangi": {
-
-                liter: 18000,
-                kg: 21000,
-                karung: 525000
-
-            },
-
-            "Beras Premium": {
-
-                liter: 20000,
-                kg: 23000,
-                karung: 575000
-
-            },
-
-            "Beras Medium": {
-
-                liter: 13000,
-                kg: 16000,
-                karung: 400000
-
-            }
-
-        };
-
-
-
-        /* ========================================================
-           FORMAT RUPIAH
+                             FORMAT RUPIAH
         ======================================================== */
 
         function formatRupiah(angka) {
@@ -681,7 +729,7 @@
 
 
         /* ========================================================
-           NOMOR ITEM
+                             NOMOR ITEM
         ======================================================== */
 
         let itemIndex = 0;
@@ -689,7 +737,7 @@
 
 
         /* ========================================================
-           TAMBAH ITEM
+                             TAMBAH ITEM
         ======================================================== */
 
         function tambahItem() {
@@ -725,7 +773,9 @@
 
             <div class="row g-3">
 
+
                 {{-- JENIS BERAS --}}
+
                 <div class="col-12">
 
                     <label class="form-label">
@@ -735,7 +785,7 @@
                     <select
                         name="items[${index}][product_name]"
                         class="form-select jenis-beras"
-                        onchange="updateItem(this)"
+                        onchange="updateJenisBeras(this)"
                         required
                     >
 
@@ -743,20 +793,52 @@
                             -- Pilih Jenis Beras --
                         </option>
 
-                        <option value="Beras Ramos">
-                            Beras Ramos
+                        <option value="Angsa">
+                            Angsa
                         </option>
 
-                        <option value="Beras Pandan Wangi">
-                            Beras Pandan Wangi
+                        <option value="Ajs">
+                            Ajs
                         </option>
 
-                        <option value="Beras Premium">
-                            Beras Premium
+                        <option value="Jembar super">
+                            Jembar super
                         </option>
 
-                        <option value="Beras Medium">
-                            Beras Medium
+                        <option value="Jembar SG">
+                            Jembar SG
+                        </option>
+
+                        <option value="Ap">
+                            Ap
+                        </option>
+
+                        <option value="Sr Ciparay">
+                            Sr Ciparay
+                        </option>
+
+                        <option value="Setrawangi">
+                            Setrawangi
+                        </option>
+
+                        <option value="Pandan wangi">
+                            Pandan wangi
+                        </option>
+
+                        <option value="Beras pn">
+                            Beras pn
+                        </option>
+
+                        <option value="Ketan putih">
+                            Ketan putih
+                        </option>
+
+                        <option value="Ketan hitam">
+                            Ketan hitam
+                        </option>
+
+                        <option value="Beras merah">
+                            Beras merah
                         </option>
 
                     </select>
@@ -765,6 +847,7 @@
 
 
                 {{-- SATUAN --}}
+
                 <div class="col-6">
 
                     <label class="form-label">
@@ -782,24 +865,13 @@
                             Pilih
                         </option>
 
-                        <option value="liter">
-                            Liter
-                        </option>
-
-                        <option value="kg">
-                            Kilogram (Kg)
-                        </option>
-
-                        <option value="karung">
-                            Karung
-                        </option>
-
                     </select>
 
                 </div>
 
 
                 {{-- JUMLAH --}}
+
                 <div class="col-6">
 
                     <label class="form-label">
@@ -819,9 +891,7 @@
                             required
                         >
 
-                        <span
-                            class="input-group-text label-satuan"
-                        >
+                        <span class="input-group-text label-satuan">
                             Unit
                         </span>
 
@@ -831,6 +901,7 @@
 
 
                 {{-- HARGA --}}
+
                 <div class="col-12">
 
                     <label class="form-label">
@@ -856,12 +927,14 @@
                         type="hidden"
                         name="items[${index}][price]"
                         class="harga-value"
+                        value="0"
                     >
 
                 </div>
 
 
                 {{-- SUBTOTAL --}}
+
                 <div class="col-12">
 
                     <div class="subtotal-box">
@@ -890,7 +963,6 @@
                 </div>
 
             </div>
-
         `;
 
 
@@ -908,12 +980,116 @@
 
 
         /* ========================================================
-           HAPUS ITEM
+                        UPDATE JENIS BERAS
+        ======================================================== */
+
+        function updateJenisBeras(element) {
+
+            const item = element.closest('.item-card');
+
+            const jenis = element.value;
+
+            const satuanSelect =
+                item.querySelector('.satuan-beras');
+
+            const jumlahInput =
+                item.querySelector('.jumlah-beras');
+
+
+            /* Reset satuan */
+
+            satuanSelect.innerHTML = `
+            <option value="">
+                Pilih
+            </option>
+        `;
+
+
+            /* Kalau belum pilih beras */
+
+            if (!jenis || !hargaBeras[jenis]) {
+
+                updateItem(satuanSelect);
+
+                return;
+
+            }
+
+
+            const data = hargaBeras[jenis];
+
+
+            /* =========================================
+               JIKA ADA HARGA KG
+            ========================================= */
+
+            if (data.kg !== undefined) {
+
+                const optionKg = document.createElement('option');
+
+                optionKg.value = 'kg';
+
+                optionKg.textContent = 'Kilogram (Kg)';
+
+                satuanSelect.appendChild(optionKg);
+
+            }
+
+
+            /* =========================================
+               JIKA ADA HARGA KARUNG
+            ========================================= */
+
+            if (data.karung !== undefined) {
+
+                const optionKarung = document.createElement('option');
+
+                optionKarung.value = 'karung';
+
+                optionKarung.textContent = 'Karung';
+
+                satuanSelect.appendChild(optionKarung);
+
+            }
+
+
+            /* =========================================
+               OTOMATIS PILIH SATUAN
+
+               Jika hanya ada satu jenis satuan,
+               langsung pilih.
+            ========================================= */
+
+            const jumlahPilihan =
+                satuanSelect.options.length - 1;
+
+
+            if (jumlahPilihan === 1) {
+
+                satuanSelect.selectedIndex = 1;
+
+            }
+
+
+            /* Reset jumlah */
+
+            jumlahInput.value = '';
+
+
+            updateItem(satuanSelect);
+
+        }
+
+
+
+        /* ========================================================
+                             HAPUS ITEM
         ======================================================== */
 
         function hapusItem(button) {
 
-            const item = button.closest('.item-card');
+            const item =
+                button.closest('.item-card');
 
             item.remove();
 
@@ -926,13 +1102,14 @@
 
 
         /* ========================================================
-           UPDATE NOMOR ITEM
+                        UPDATE NOMOR ITEM
         ======================================================== */
 
         function updateNomorItem() {
 
             const items =
                 document.querySelectorAll('.item-card');
+
 
             items.forEach((item, index) => {
 
@@ -946,7 +1123,7 @@
 
 
         /* ========================================================
-           UPDATE ITEM
+                             UPDATE ITEM
         ======================================================== */
 
         function updateItem(element) {
@@ -954,64 +1131,89 @@
             const item =
                 element.closest('.item-card');
 
+
             const jenis =
                 item.querySelector('.jenis-beras').value;
+
 
             const satuan =
                 item.querySelector('.satuan-beras').value;
 
+
+            const jumlahInput =
+                item.querySelector('.jumlah-beras');
+
+
             const jumlah =
-                parseFloat(
-                    item.querySelector('.jumlah-beras').value
-                ) || 0;
+                parseFloat(jumlahInput.value) || 0;
 
 
             const hargaDisplay =
                 item.querySelector('.harga-display');
 
+
             const hargaValue =
                 item.querySelector('.harga-value');
+
 
             const labelSatuan =
                 item.querySelector('.label-satuan');
 
+
             const subtotalDisplay =
                 item.querySelector('.subtotal-nominal');
+
 
             const subtotalValue =
                 item.querySelector('.subtotal-value');
 
 
-            /* LABEL SATUAN */
+            /* =========================================
+                             LABEL SATUAN
+            ========================================= */
 
-            if (satuan === 'liter') {
-
-                labelSatuan.innerText = 'Liter';
-
-            } else if (satuan === 'kg') {
+            if (satuan === 'kg') {
 
                 labelSatuan.innerText = 'Kg';
+
+                jumlahInput.step = '0.1';
+
+                jumlahInput.min = '0.1';
 
             } else if (satuan === 'karung') {
 
                 labelSatuan.innerText = 'Karung';
 
+                /* Karung harus bilangan bulat */
+
+                jumlahInput.step = '1';
+
+                jumlahInput.min = '1';
+
             } else {
 
                 labelSatuan.innerText = 'Unit';
 
+                jumlahInput.step = '0.1';
+
+                jumlahInput.min = '0.1';
+
             }
 
 
-            /* HARGA */
+
+            /* =========================================
+                             HARGA
+            ========================================= */
 
             let hargaSatuan = 0;
+
 
             if (
                 jenis !== '' &&
                 satuan !== '' &&
                 hargaBeras[jenis] &&
-                hargaBeras[jenis][satuan]
+                hargaBeras[jenis][satuan] !== undefined
             ) {
 
                 hargaSatuan =
@@ -1025,11 +1227,14 @@
                 formatRupiah(hargaSatuan) :
                 '';
 
+
             hargaValue.value =
                 hargaSatuan;
 
 
-            /* SUBTOTAL */
+            /* =========================================
+                             SUBTOTAL
+            ========================================= */
 
             const subtotal =
                 hargaSatuan * jumlah;
@@ -1037,6 +1242,7 @@
 
             subtotalDisplay.innerText =
                 formatRupiah(subtotal);
+
 
             subtotalValue.value =
                 subtotal;
@@ -1049,7 +1255,7 @@
 
 
         /* ========================================================
-           HITUNG TOTAL SEMUA ITEM
+                        HITUNG TOTAL SEMUA ITEM
         ======================================================== */
 
         function hitungTotal() {
@@ -1065,6 +1271,7 @@
                         parseFloat(
                             item.querySelector('.subtotal-value').value
                         ) || 0;
+
 
                     total += subtotal;
 
@@ -1088,14 +1295,16 @@
 
 
         /* ========================================================
-           TITIP / HUTANG
+                             TITIP / HUTANG
         ======================================================== */
 
         const titip =
             document.getElementById('titip');
 
+
         const formBayar =
             document.getElementById('form_bayar');
+
 
         const formTitip =
             document.getElementById('form_titip');
@@ -1134,11 +1343,12 @@
 
 
         /* ========================================================
-           PEMBAYARAN NORMAL
+                        PEMBAYARAN NORMAL
         ======================================================== */
 
         const uangDibayarkan =
             document.getElementById('uang_dibayarkan');
+
 
         const tampilanKembalian =
             document.getElementById('tampilan_kembalian');
@@ -1183,17 +1393,20 @@
 
 
         /* ========================================================
-           PEMBAYARAN TITIP
+                        PEMBAYARAN TITIP
         ======================================================== */
 
         const nominalTitip =
             document.getElementById('nominal_titip');
 
+
         const tampilanTotalBelanja =
             document.getElementById('tampilan_total_belanja');
 
+
         const tampilanTitip =
             document.getElementById('tampilan_titip');
+
 
         const tampilanSisa =
             document.getElementById('tampilan_sisa');
@@ -1246,7 +1459,7 @@
 
 
         /* ========================================================
-           TAMBAHKAN ITEM PERTAMA
+                        TAMBAHKAN ITEM PERTAMA
         ======================================================== */
 
         tambahItem();
@@ -1254,7 +1467,7 @@
 
 
         /* ========================================================
-           RESET
+                             RESET
         ======================================================== */
 
         function resetForm() {
@@ -1265,11 +1478,13 @@
 
                 itemIndex = 0;
 
+
                 tambahItem();
 
 
                 document.getElementById('total_harga').innerText =
                     'Rp 0';
+
 
                 document.getElementById('total_harga_value').value =
                     0;
@@ -1278,6 +1493,7 @@
                 document.getElementById('uang_dibayarkan').value =
                     0;
 
+
                 document.getElementById('nominal_titip').value =
                     0;
 
@@ -1285,11 +1501,14 @@
                 document.getElementById('tampilan_kembalian').innerText =
                     'Rp 0';
 
+
                 document.getElementById('tampilan_total_belanja').innerText =
                     'Rp 0';
 
+
                 document.getElementById('tampilan_titip').innerText =
                     'Rp 0';
+
 
                 document.getElementById('tampilan_sisa').innerText =
                     'Rp 0';
@@ -1297,6 +1516,7 @@
 
                 formTitip.style.display =
                     'none';
+
 
                 formBayar.style.display =
                     'block';

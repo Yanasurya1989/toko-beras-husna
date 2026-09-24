@@ -5,11 +5,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 
 use App\Http\Controllers\TransactionController;
-
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
+
+use App\Http\Controllers\ExpenseController;
+
+Route::resource('pengeluaran', ExpenseController::class)
+    ->except(['show']);
+
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::resource('sales', SaleController::class);
 
@@ -35,3 +39,6 @@ Route::post('/transaksi/{transaction}/payment', [TransactionController::class, '
 
 Route::delete('/transaksi/{transaction}', [TransactionController::class, 'destroy'])
     ->name('transaksi.destroy');
+
+Route::get('/transaksi/{transaction}/struk', [TransactionController::class, 'struk'])
+    ->name('transaksi.struk');
