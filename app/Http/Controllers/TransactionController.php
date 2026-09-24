@@ -818,4 +818,66 @@ class TransactionController extends Controller
                 'Transaksi berhasil dihapus.'
             );
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $passwordDelete = 'Husna123';
+
+        /*
+    |--------------------------------------------------------------------------
+    | Cek password
+    |--------------------------------------------------------------------------
+    */
+
+        if ($request->delete_password !== $passwordDelete) {
+            return redirect()
+                ->route('transaksi.index')
+                ->with('error', 'Password salah. Transaksi tidak dihapus.');
+        }
+
+        /*
+    |--------------------------------------------------------------------------
+    | Cek transaksi yang dipilih
+    |--------------------------------------------------------------------------
+    */
+
+        $ids = $request->input('selected_transactions', []);
+
+        if (empty($ids)) {
+            return redirect()
+                ->route('transaksi.index')
+                ->with('error', 'Tidak ada transaksi yang dipilih.');
+        }
+
+        /*
+    |--------------------------------------------------------------------------
+    | Hapus transaksi
+    |--------------------------------------------------------------------------
+    |
+    | Karena transaction_items dan payments menggunakan
+    | cascadeOnDelete(), item dan riwayat pembayaran
+    | akan ikut terhapus.
+    |
+    */
+
+        try {
+
+            Transaction::whereIn('id', $ids)->delete();
+
+            return redirect()
+                ->route('transaksi.index')
+                ->with(
+                    'success',
+                    count($ids) . ' transaksi berhasil dihapus.'
+                );
+        } catch (\Throwable $e) {
+
+            return redirect()
+                ->route('transaksi.index')
+                ->with(
+                    'error',
+                    'Gagal menghapus transaksi: ' . $e->getMessage()
+                );
+        }
+    }
 }

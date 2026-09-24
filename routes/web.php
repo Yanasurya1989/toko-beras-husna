@@ -31,6 +31,9 @@ Route::post('/transaksi', [TransactionController::class, 'store'])
 Route::get('/transaksi/export', [TransactionController::class, 'export'])
     ->name('transaksi.export');
 
+Route::delete('/transaksi/bulk-delete', [TransactionController::class, 'bulkDestroy'])
+    ->name('transaksi.bulkDestroy');
+
 Route::get('/transaksi/{transaction}/payment', [TransactionController::class, 'createPayment'])
     ->name('transaksi.payment.create');
 

@@ -240,155 +240,190 @@
 
             <div class="card-body">
 
-                <div class="table-responsive">
+                <form action="{{ route('transaksi.bulkDestroy') }}" method="POST" id="bulkDeleteForm"
+                    onsubmit="return hapusTransaksiTerpilih(this);">
+                    @csrf
+                    @method('DELETE')
 
-                    <table class="table table-hover align-middle">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
 
-                        <thead class="table-light">
+                        <div>
+                            <button type="submit" class="btn btn-danger btn-sm" id="btnBulkDelete" disabled>
+                                <i class="bi bi-trash"></i>
+                                Hapus Terpilih
+                                <span id="jumlahTerpilih"></span>
+                            </button>
+                        </div>
 
-                            <tr>
-                                <th>No</th>
-                                <th>Tanggal</th>
-                                <th>Pelanggan</th>
-                                <th>Item</th>
-                                <th>Total</th>
-                                <th>Dibayar</th>
-                                <th>Sisa Hutang</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </tr>
+                        <div class="text-muted small">
+                            Centang transaksi yang ingin dihapus
+                        </div>
 
-                        </thead>
+                    </div>
 
-                        <tbody>
+                    <div class="table-responsive">
 
-                            @forelse($transactions as $transaction)
+                        <table class="table table-hover align-middle">
+
+                            <thead class="table-light">
                                 <tr>
-
-                                    <td>
-                                        {{ $transactions->firstItem() + $loop->index }}
-                                    </td>
-
-                                    <td>
-                                        <div>
-                                            {{ $transaction->transaction_date->format('d/m/Y') }}
+                                    <th style="width: 45px;">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="checkAll"
+                                                title="Pilih semua">
                                         </div>
+                                    </th>
 
-                                        <small class="text-muted">
-                                            {{ $transaction->transaction_date->format('H:i') }}
-                                        </small>
-                                    </td>
+                                    <th>No</th>
+                                    <th>Tanggal</th>
+                                    <th>Pelanggan</th>
+                                    <th>Item</th>
+                                    <th>Total</th>
+                                    <th>Dibayar</th>
+                                    <th>Sisa Hutang</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
 
-                                    <td>
-                                        {{ $transaction->customer_name }}
-                                    </td>
+                            <tbody>
 
-                                    <td>
-                                        {{ $transaction->items->count() }} item
-                                    </td>
+                                @forelse($transactions as $transaction)
+                                    <tr>
 
-                                    <td>
-                                        <strong>
-                                            Rp {{ number_format($transaction->total_price, 0, ',', '.') }}
-                                        </strong>
-                                    </td>
+                                        <td>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input transaction-checkbox"
+                                                    name="selected_transactions[]" value="{{ $transaction->id }}"
+                                                    form="bulkDeleteForm">
+                                            </div>
+                                        </td>
 
-                                    <td>
-                                        Rp {{ number_format($transaction->amount_paid, 0, ',', '.') }}
-                                    </td>
+                                        <td>
+                                            {{ $transactions->firstItem() + $loop->index }}
+                                        </td>
 
-                                    <td>
+                                        <td>
+                                            <div>
+                                                {{ $transaction->transaction_date->format('d/m/Y') }}
+                                            </div>
 
-                                        @if ($transaction->remaining_debt > 0)
-                                            <span class="text-danger fw-semibold">
-                                                Rp {{ number_format($transaction->remaining_debt, 0, ',', '.') }}
-                                            </span>
-                                        @else
-                                            <span class="text-success">
-                                                Rp 0
-                                            </span>
-                                        @endif
+                                            <small class="text-muted">
+                                                {{ $transaction->transaction_date->format('H:i') }}
+                                            </small>
+                                        </td>
 
-                                    </td>
+                                        <td>
+                                            {{ $transaction->customer_name }}
+                                        </td>
 
-                                    <td>
+                                        <td>
+                                            {{ $transaction->items->count() }} item
+                                        </td>
 
-                                        @if ($transaction->payment_status === 'paid')
-                                            <span class="badge bg-success">
-                                                Lunas
-                                            </span>
-                                        @else
-                                            <span class="badge bg-warning text-dark">
-                                                Belum Lunas
-                                            </span>
-                                        @endif
+                                        <td>
+                                            <strong>
+                                                Rp {{ number_format($transaction->total_price, 0, ',', '.') }}
+                                            </strong>
+                                        </td>
 
-                                    </td>
+                                        <td>
+                                            Rp {{ number_format($transaction->amount_paid, 0, ',', '.') }}
+                                        </td>
 
-                                    <td>
-
-                                        <div class="d-flex gap-1">
+                                        <td>
 
                                             @if ($transaction->remaining_debt > 0)
-                                                <a href="{{ route('transaksi.payment.create', $transaction->id) }}"
-                                                    class="btn btn-sm btn-success" title="Bayar Hutang">
-
-                                                    <i class="bi bi-cash-coin"></i>
-
-                                                </a>
+                                                <span class="text-danger fw-semibold">
+                                                    Rp {{ number_format($transaction->remaining_debt, 0, ',', '.') }}
+                                                </span>
                                             @else
-                                                <span class="btn btn-sm btn-outline-success" title="Lunas">
-
-                                                    <i class="bi bi-check-circle"></i>
-
+                                                <span class="text-success">
+                                                    Rp 0
                                                 </span>
                                             @endif
 
+                                        </td>
 
-                                            {{-- HAPUS --}}
-                                            <form action="{{ route('transaksi.destroy', $transaction->id) }}"
-                                                method="POST" onsubmit="return hapusTransaksi(this);">
+                                        <td>
 
-                                                @csrf
-                                                @method('DELETE')
+                                            @if ($transaction->payment_status === 'paid')
+                                                <span class="badge bg-success">
+                                                    Lunas
+                                                </span>
+                                            @else
+                                                <span class="badge bg-warning text-dark">
+                                                    Belum Lunas
+                                                </span>
+                                            @endif
 
-                                                <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
+                                        </td>
 
-                                        </div>
+                                        <td>
 
-                                    </td>
+                                            <div class="d-flex gap-1">
 
-                                </tr>
+                                                @if ($transaction->remaining_debt > 0)
+                                                    <a href="{{ route('transaksi.payment.create', $transaction->id) }}"
+                                                        class="btn btn-sm btn-success" title="Bayar Hutang">
 
-                            @empty
+                                                        <i class="bi bi-cash-coin"></i>
 
-                                <tr>
-                                    <td colspan="9" class="text-center text-muted py-4">
+                                                    </a>
+                                                @else
+                                                    <span class="btn btn-sm btn-outline-success" title="Lunas">
 
-                                        Belum ada transaksi.
+                                                        <i class="bi bi-check-circle"></i>
 
-                                    </td>
-                                </tr>
-                            @endforelse
-
-                        </tbody>
-
-                    </table>
-
-                </div>
+                                                    </span>
+                                                @endif
 
 
-                {{-- PAGINATION --}}
-                <div class="mt-3">
-                    {{ $transactions->links() }}
-                </div>
+                                                {{-- HAPUS --}}
+                                                <form action="{{ route('transaksi.destroy', $transaction->id) }}"
+                                                    method="POST" onsubmit="return hapusTransaksi(this);">
+
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+
+                                @empty
+
+                                    <tr>
+                                        <td colspan="10" class="text-center text-muted py-4">
+
+                                            Belum ada transaksi.
+
+                                        </td>
+                                    </tr>
+                                @endforelse
+
+                            </tbody>
+
+                        </table>
+                </form>
 
             </div>
 
+
+            {{-- PAGINATION --}}
+            <div class="mt-3">
+                {{ $transactions->links() }}
+            </div>
+
         </div>
+
+    </div>
 
     </div>
 
@@ -408,7 +443,7 @@
 
             if (!confirm(
                     'Yakin ingin menghapus transaksi ini? Data transaksi, item, dan riwayat pembayaran akan ikut terhapus.'
-                    )) {
+                )) {
                 return false;
             }
 
@@ -419,6 +454,192 @@
             input.value = password;
 
             form.appendChild(input);
+
+            return true;
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const checkAll = document.getElementById('checkAll');
+            const checkboxes = document.querySelectorAll('.transaction-checkbox');
+            const btnBulkDelete = document.getElementById('btnBulkDelete');
+            const jumlahTerpilih = document.getElementById('jumlahTerpilih');
+
+
+            function updateBulkButton() {
+
+                const checked = document.querySelectorAll(
+                    '.transaction-checkbox:checked'
+                );
+
+                const jumlah = checked.length;
+
+                if (jumlah > 0) {
+
+                    btnBulkDelete.disabled = false;
+
+                    jumlahTerpilih.textContent = '(' + jumlah + ')';
+
+                } else {
+
+                    btnBulkDelete.disabled = true;
+
+                    jumlahTerpilih.textContent = '';
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Update checkbox "Pilih Semua"
+                |--------------------------------------------------------------------------
+                */
+
+                if (jumlah === checkboxes.length && checkboxes.length > 0) {
+
+                    checkAll.checked = true;
+
+                } else {
+
+                    checkAll.checked = false;
+                }
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | PILIH SEMUA
+            |--------------------------------------------------------------------------
+            */
+
+            checkAll.addEventListener('change', function() {
+
+                checkboxes.forEach(function(checkbox) {
+
+                    checkbox.checked = checkAll.checked;
+
+                });
+
+                updateBulkButton();
+            });
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | CHECKBOX INDIVIDUAL
+            |--------------------------------------------------------------------------
+            */
+
+            checkboxes.forEach(function(checkbox) {
+
+                checkbox.addEventListener('change', function() {
+
+                    updateBulkButton();
+
+                });
+
+            });
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Kondisi awal
+            |--------------------------------------------------------------------------
+            */
+
+            updateBulkButton();
+
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | HAPUS TRANSAKSI TERPILIH
+        |--------------------------------------------------------------------------
+        */
+
+        function hapusTransaksiTerpilih(form) {
+
+            const checked = document.querySelectorAll(
+                '.transaction-checkbox:checked'
+            );
+
+            const jumlah = checked.length;
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Tidak ada yang dipilih
+            |--------------------------------------------------------------------------
+            */
+
+            if (jumlah === 0) {
+
+                alert('Silakan pilih transaksi yang ingin dihapus.');
+
+                return false;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Konfirmasi
+            |--------------------------------------------------------------------------
+            */
+
+            if (!confirm(
+                    'Yakin ingin menghapus ' +
+                    jumlah +
+                    ' transaksi yang dipilih?\n\n' +
+                    'Data transaksi, item, dan riwayat pembayaran akan ikut terhapus.'
+                )) {
+
+                return false;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Password
+            |--------------------------------------------------------------------------
+            */
+
+            const password = prompt(
+                'Masukkan password untuk menghapus ' +
+                jumlah +
+                ' transaksi:'
+            );
+
+
+            if (password === null) {
+
+                return false;
+            }
+
+
+            if (password.trim() === '') {
+
+                alert('Password harus diisi.');
+
+                return false;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Masukkan password ke form
+            |--------------------------------------------------------------------------
+            */
+
+            const input = document.createElement('input');
+
+            input.type = 'hidden';
+            input.name = 'delete_password';
+            input.value = password;
+
+            form.appendChild(input);
+
 
             return true;
         }
