@@ -260,7 +260,7 @@
                 Pembeli :
                 {{ $transaction->customer_name }}
             </div> --}}
-
+            <br>
             <div>
                 Kasir :
                 Kasir01
