@@ -256,10 +256,10 @@
                 {{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d/m/Y H:i') }}
             </div>
 
-            <div>
+            {{-- <div>
                 Pembeli :
                 {{ $transaction->customer_name }}
-            </div>
+            </div> --}}
 
             <div>
                 Kasir :
