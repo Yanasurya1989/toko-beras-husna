@@ -4,8 +4,8 @@
 
     <style>
         /* =========================================
-                               TRANSACTION FORM
-                ========================================= */
+                       TRANSACTION FORM
+        ========================================= */
 
         .transaksi-wrapper {
             max-width: 850px;
@@ -44,8 +44,8 @@
         }
 
         /* =========================================
-                               ITEM BERAS
-                ========================================= */
+                       ITEM BERAS
+        ========================================= */
 
         .item-card {
             border: 1px solid #dee2e6;
@@ -110,8 +110,8 @@
         }
 
         /* =========================================
-                               TOTAL
-                ========================================= */
+                       TOTAL
+        ========================================= */
 
         .total-box {
             border-radius: 14px;
@@ -124,8 +124,8 @@
         }
 
         /* =========================================
-                               RINGKASAN
-                ========================================= */
+                       RINGKASAN
+        ========================================= */
 
         .ringkasan-box {
             border-radius: 14px;
@@ -151,8 +151,8 @@
         }
 
         /* =========================================
-                               BUTTON
-                ========================================= */
+                       BUTTON
+        ========================================= */
 
         .btn-transaksi {
             min-height: 48px;
@@ -161,8 +161,8 @@
         }
 
         /* =========================================
-                               MOBILE
-                ========================================= */
+                       MOBILE
+        ========================================= */
 
         @media (max-width: 576px) {
 
@@ -224,17 +224,16 @@
         }
     </style>
 
+
     <div class="container py-3 py-md-4">
 
-        ```
         <div class="transaksi-wrapper">
 
             <div class="card shadow-sm transaksi-card">
 
                 {{-- =========================================
-                 HEADER
-        ========================================== --}}
-
+                         HEADER
+            ========================================== --}}
                 <div class="card-header bg-primary text-white transaksi-header">
 
                     <h5 class="mb-1">
@@ -251,7 +250,6 @@
                 <div class="card-body">
 
                     {{-- SUCCESS --}}
-
                     @if (session('success'))
                         <div class="alert alert-success">
                             {{ session('success') }}
@@ -260,7 +258,6 @@
 
 
                     {{-- ERROR --}}
-
                     @if ($errors->any())
                         <div class="alert alert-danger">
 
@@ -284,8 +281,8 @@
 
 
                         {{-- =========================================
-                     TANGGAL TRANSAKSI
-                ========================================== --}}
+                         TANGGAL TRANSAKSI
+                    ========================================== --}}
 
                         <div class="mb-3">
 
@@ -305,8 +302,8 @@
 
 
                         {{-- =========================================
-                     NAMA PEMBELI
-                ========================================== --}}
+                         NAMA PEMBELI
+                    ========================================== --}}
 
                         <div class="mb-4">
 
@@ -321,8 +318,8 @@
 
 
                         {{-- =========================================
-                     DAFTAR BERAS
-                ========================================== --}}
+                         DAFTAR BERAS
+                    ========================================== --}}
 
                         <div class="d-flex justify-content-between align-items-center mb-3">
 
@@ -347,8 +344,8 @@
 
 
                         {{-- =========================================
-                     BUTTON TAMBAH BERAS
-                ========================================== --}}
+                         BUTTON TAMBAH BERAS
+                    ========================================== --}}
 
                         <button type="button" class="btn btn-outline-primary btn-tambah-item w-100 mb-4"
                             onclick="tambahItem()">
@@ -357,8 +354,8 @@
 
 
                         {{-- =========================================
-                     TOTAL BELANJA
-                ========================================== --}}
+                         TOTAL BELANJA
+                    ========================================== --}}
 
                         <div class="mb-4">
 
@@ -384,8 +381,8 @@
 
 
                         {{-- =========================================
-                     TITIP / HUTANG
-                ========================================== --}}
+                         TITIP / HUTANG
+                    ========================================== --}}
 
                         <div class="mb-3">
 
@@ -409,8 +406,8 @@
 
 
                         {{-- =========================================
-                     PEMBAYARAN NORMAL
-                ========================================== --}}
+                         PEMBAYARAN NORMAL
+                    ========================================== --}}
 
                         <div id="form_bayar">
 
@@ -472,8 +469,8 @@
 
 
                         {{-- =========================================
-                     PEMBAYARAN TITIP / HUTANG
-                ========================================== --}}
+                         PEMBAYARAN TITIP / HUTANG
+                    ========================================== --}}
 
                         <div id="form_titip" style="display: none;">
 
@@ -564,8 +561,8 @@
 
 
                         {{-- =========================================
-                     BUTTON
-                ========================================== --}}
+                         BUTTON
+                    ========================================== --}}
 
                         <hr>
 
@@ -590,41 +587,93 @@
             </div>
 
         </div>
-        ```
 
     </div>
 
+
+
     {{-- =========================================================
-JAVASCRIPT
+                         JAVASCRIPT
 ========================================================= --}}
 
     <script>
         /* ========================================================
-                                DATA BERAS DARI DATABASE
-                   ========================================================
+                        DATA BERAS & HARGA
+           ========================================================
 
-                   DATA INI DIAMBIL LANGSUNG DARI TABLE rice_products.
+           eceran = harga per Kg
 
-                   Tidak ada lagi daftar:
-                   Angsa
-                   Ajs
-                   Jembar
-                   dst.
+           karung = harga per Karung
 
-                   Jadi ketika produk ditambah di database,
-                   otomatis muncul di form transaksi.
-                ======================================================== */
+           Jika eceran tidak tersedia:
+           hanya bisa memilih Karung.
 
-        const daftarBeras = @json($products);
+           Jika karung tidak tersedia:
+           hanya bisa memilih Kg.
+        ======================================================== */
 
-        const produkBeras = {};
+        const hargaBeras = {
 
+            "Angsa": {
+                kg: 14500,
+                karung: 352500
+            },
 
-        daftarBeras.forEach(function(produk) {
+            "Ajs": {
+                kg: 15000,
+                karung: 357500
+            },
 
-            produkBeras[produk.nama] = produk;
+            "Jembar super": {
+                kg: 15000,
+                karung: 360000
+            },
 
-        });
+            "Jembar SG": {
+                karung: 362500
+            },
+
+            "Ap": {
+                kg: 15500,
+                karung: 367500
+            },
+
+            "Sr Ciparay": {
+                kg: 16000,
+                karung: 375000
+            },
+
+            "Setrawangi": {
+                kg: 16500,
+                karung: 385000
+            },
+
+            "Pandan wangi": {
+                kg: 17000,
+                karung: 400000
+            },
+
+            "Beras pn": {
+                kg: 17500,
+                karung: 425000
+            },
+
+            "Ketan putih": {
+                kg: 23000,
+                karung: 550000
+            },
+
+            "Ketan hitam": {
+                kg: 22000,
+                karung: 512500
+            },
+
+            "Beras merah": {
+                kg: 16500,
+                karung: 400000
+            }
+
+        };
 
 
         /* ========================================================
@@ -650,13 +699,13 @@ JAVASCRIPT
 
             document.getElementById('transaction_date').value =
                 `${tahun}-${bulan}-${hari} ${jam}:${menit}:${detik}`;
-
         }
 
 
         updateTanggal();
 
         setInterval(updateTanggal, 1000);
+
 
 
         /* ========================================================
@@ -678,11 +727,13 @@ JAVASCRIPT
         }
 
 
+
         /* ========================================================
                              NOMOR ITEM
         ======================================================== */
 
         let itemIndex = 0;
+
 
 
         /* ========================================================
@@ -742,15 +793,53 @@ JAVASCRIPT
                             -- Pilih Jenis Beras --
                         </option>
 
-                        ${daftarBeras.map(function(produk) {
+                        <option value="Angsa">
+                            Angsa
+                        </option>
 
-                            return `
-                                            <option value="${produk.nama}">
-                                                ${produk.nama}
-                                            </option>
-                                        `;
+                        <option value="Ajs">
+                            Ajs
+                        </option>
 
-                        }).join('')}
+                        <option value="Jembar super">
+                            Jembar super
+                        </option>
+
+                        <option value="Jembar SG">
+                            Jembar SG
+                        </option>
+
+                        <option value="Ap">
+                            Ap
+                        </option>
+
+                        <option value="Sr Ciparay">
+                            Sr Ciparay
+                        </option>
+
+                        <option value="Setrawangi">
+                            Setrawangi
+                        </option>
+
+                        <option value="Pandan wangi">
+                            Pandan wangi
+                        </option>
+
+                        <option value="Beras pn">
+                            Beras pn
+                        </option>
+
+                        <option value="Ketan putih">
+                            Ketan putih
+                        </option>
+
+                        <option value="Ketan hitam">
+                            Ketan hitam
+                        </option>
+
+                        <option value="Beras merah">
+                            Beras merah
+                        </option>
 
                     </select>
 
@@ -889,17 +978,16 @@ JAVASCRIPT
         }
 
 
+
         /* ========================================================
                         UPDATE JENIS BERAS
         ======================================================== */
 
         function updateJenisBeras(element) {
 
-            const item =
-                element.closest('.item-card');
+            const item = element.closest('.item-card');
 
-            const jenis =
-                element.value;
+            const jenis = element.value;
 
             const satuanSelect =
                 item.querySelector('.satuan-beras');
@@ -911,17 +999,15 @@ JAVASCRIPT
             /* Reset satuan */
 
             satuanSelect.innerHTML = `
-
             <option value="">
                 Pilih
             </option>
-
         `;
 
 
             /* Kalau belum pilih beras */
 
-            if (!jenis || !produkBeras[jenis]) {
+            if (!jenis || !hargaBeras[jenis]) {
 
                 updateItem(satuanSelect);
 
@@ -930,27 +1016,20 @@ JAVASCRIPT
             }
 
 
-            const data =
-                produkBeras[jenis];
+            const data = hargaBeras[jenis];
 
 
             /* =========================================
                JIKA ADA HARGA KG
             ========================================= */
 
-            if (
-                data.harga_kg !== null &&
-                data.harga_kg !== undefined &&
-                parseFloat(data.harga_kg) > 0
-            ) {
+            if (data.kg !== undefined) {
 
-                const optionKg =
-                    document.createElement('option');
+                const optionKg = document.createElement('option');
 
                 optionKg.value = 'kg';
 
-                optionKg.textContent =
-                    'Kilogram (Kg)';
+                optionKg.textContent = 'Kilogram (Kg)';
 
                 satuanSelect.appendChild(optionKg);
 
@@ -961,20 +1040,13 @@ JAVASCRIPT
                JIKA ADA HARGA KARUNG
             ========================================= */
 
-            if (
-                data.harga_karung !== null &&
-                data.harga_karung !== undefined &&
-                parseFloat(data.harga_karung) > 0
-            ) {
+            if (data.karung !== undefined) {
 
-                const optionKarung =
-                    document.createElement('option');
+                const optionKarung = document.createElement('option');
 
-                optionKarung.value =
-                    'karung';
+                optionKarung.value = 'karung';
 
-                optionKarung.textContent =
-                    'Karung';
+                optionKarung.textContent = 'Karung';
 
                 satuanSelect.appendChild(optionKarung);
 
@@ -984,7 +1056,7 @@ JAVASCRIPT
             /* =========================================
                OTOMATIS PILIH SATUAN
 
-               Jika hanya ada satu pilihan,
+               Jika hanya ada satu jenis satuan,
                langsung pilih.
             ========================================= */
 
@@ -1009,6 +1081,7 @@ JAVASCRIPT
         }
 
 
+
         /* ========================================================
                              HAPUS ITEM
         ======================================================== */
@@ -1025,6 +1098,7 @@ JAVASCRIPT
             hitungTotal();
 
         }
+
 
 
         /* ========================================================
@@ -1045,6 +1119,7 @@ JAVASCRIPT
             });
 
         }
+
 
 
         /* ========================================================
@@ -1099,40 +1174,32 @@ JAVASCRIPT
 
             if (satuan === 'kg') {
 
-                labelSatuan.innerText =
-                    'Kg';
+                labelSatuan.innerText = 'Kg';
 
-                jumlahInput.step =
-                    '0.1';
+                jumlahInput.step = '0.1';
 
-                jumlahInput.min =
-                    '0.1';
+                jumlahInput.min = '0.1';
 
             } else if (satuan === 'karung') {
 
-                labelSatuan.innerText =
-                    'Karung';
+                labelSatuan.innerText = 'Karung';
 
                 /* Karung harus bilangan bulat */
 
-                jumlahInput.step =
-                    '1';
+                jumlahInput.step = '1';
 
-                jumlahInput.min =
-                    '1';
+                jumlahInput.min = '1';
 
             } else {
 
-                labelSatuan.innerText =
-                    'Unit';
+                labelSatuan.innerText = 'Unit';
 
-                jumlahInput.step =
-                    '0.1';
+                jumlahInput.step = '0.1';
 
-                jumlahInput.min =
-                    '0.1';
+                jumlahInput.min = '0.1';
 
             }
+
 
 
             /* =========================================
@@ -1145,27 +1212,12 @@ JAVASCRIPT
             if (
                 jenis !== '' &&
                 satuan !== '' &&
-                produkBeras[jenis]
+                hargaBeras[jenis] &&
+                hargaBeras[jenis][satuan] !== undefined
             ) {
 
-                const produk =
-                    produkBeras[jenis];
-
-
-                if (satuan === 'kg') {
-
-                    hargaSatuan =
-                        parseFloat(produk.harga_kg) || 0;
-
-                }
-
-
-                if (satuan === 'karung') {
-
-                    hargaSatuan =
-                        parseFloat(produk.harga_karung) || 0;
-
-                }
+                hargaSatuan =
+                    hargaBeras[jenis][satuan];
 
             }
 
@@ -1199,6 +1251,7 @@ JAVASCRIPT
             hitungTotal();
 
         }
+
 
 
         /* ========================================================
@@ -1238,6 +1291,7 @@ JAVASCRIPT
             hitungTitip();
 
         }
+
 
 
         /* ========================================================
@@ -1287,6 +1341,7 @@ JAVASCRIPT
         );
 
 
+
         /* ========================================================
                         PEMBAYARAN NORMAL
         ======================================================== */
@@ -1334,6 +1389,7 @@ JAVASCRIPT
                 formatRupiah(kembalian);
 
         }
+
 
 
         /* ========================================================
@@ -1401,11 +1457,13 @@ JAVASCRIPT
         }
 
 
+
         /* ========================================================
                         TAMBAHKAN ITEM PERTAMA
         ======================================================== */
 
         tambahItem();
+
 
 
         /* ========================================================

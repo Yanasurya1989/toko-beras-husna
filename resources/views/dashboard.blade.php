@@ -18,7 +18,7 @@
                     <h2>{{ $barang }}</h2>
 
                     <div class="mt-auto">
-                        <a href="{{ route('products.index') }}" class="btn btn-success btn-sm mt-2">
+                        <a href="{{ route('rice-products.index') }}" class="btn btn-success btn-sm mt-2">
                             Buka
                         </a>
                     </div>

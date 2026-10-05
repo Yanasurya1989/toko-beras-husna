@@ -6,6 +6,8 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\RiceProduct;
+
 class TransactionController extends Controller
 {
     public function index(Request $request)
@@ -128,7 +130,9 @@ class TransactionController extends Controller
 
     public function create()
     {
-        return view('transaksi.create');
+        $products = RiceProduct::orderBy('nama')->get();
+
+        return view('transaksi.create', compact('products'));
     }
 
     public function store(Request $request)

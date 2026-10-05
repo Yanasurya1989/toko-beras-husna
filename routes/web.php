@@ -1,15 +1,22 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RiceProductController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\DashboardController;
+Route::delete(
+    'rice-products/bulk-destroy',
+    [RiceProductController::class, 'bulkDestroy']
+)->name('rice-products.bulk-destroy');
 
-use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\SaleController;
-
-use App\Http\Controllers\ExpenseController;
-
+Route::resource(
+    'rice-products',
+    RiceProductController::class
+);
 Route::resource('pengeluaran', ExpenseController::class)
     ->except(['show']);
 
