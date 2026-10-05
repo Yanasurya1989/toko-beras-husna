@@ -228,7 +228,7 @@
             </div>
 
             <div>
-                Jl. Rancaekek - Majalaya
+                Jl. Rancaekek - Majalaya No. 119
             </div>
 
             <div>
